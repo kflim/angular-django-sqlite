@@ -7,42 +7,61 @@ h2 {
   text-align: center;
   margin-bottom: 20px;
   color: white;
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
 }
 
-ul {
-  list-style-type: none; // Remove default bullets
-  padding: 0;
+.task-list {
+  max-width: 50%;
+  margin: 0 auto; /* Center the list */
+  padding: 10px;
+  background-color: #2e2e2e;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
 
-  li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #fff;
-    transition: background-color 0.3s;
+.task-dropdown {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 500ms ease-in-out, opacity 500ms ease-in-out;
+}
 
-    &:hover {
-      background-color: #f1f1f1;
-    }
+.task-dropdown.open {
+  max-height: 200px;
+  opacity: 1;
+}
 
-    button {
-      background-color: transparent;
-      border: none;
-      border-radius: 5px;
-      padding: 5px 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      font-size: large;
-      font-family: Arial, Helvetica, sans-serif;
+.dropdown-header {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative; /* Add this to control child button visibility */
 
-      &:hover {
-        background-color: #958284;
-      }
-    }
+  .delete-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    color: white;
   }
+
+  .delete-button:hover {
+    color: #ff4d4d;
+  }
+
+  &:hover .delete-button {
+    opacity: 1; /* Show button on hover */
+  }
+}
+
+.task-description {
+  color: white;
+  padding: 10px;
 }

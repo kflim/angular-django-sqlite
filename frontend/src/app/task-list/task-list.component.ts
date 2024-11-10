@@ -1,25 +1,46 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { Task } from '../task.model';
+import { FrontendTask } from '../frontend-task.model';
 import { TaskService } from '../task.service';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <h2>Task List</h2>
-    <ul>
-      <li *ngFor="let task of tasks">
-        {{ task.title }}
-        <button (click)="deleteTask(task.id ?? -1)">X</button>
-      </li>
-    </ul>
-  `,
+  templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.less',
+  animations: [
+    trigger('dropdownAnimation', [
+      state(
+        'open',
+        style({
+          height: '*',
+          opacity: 1,
+          overflow: 'hidden',
+        })
+      ),
+      state(
+        'closed',
+        style({
+          height: '0',
+          opacity: 0,
+          overflow: 'hidden',
+        })
+      ),
+      transition('open <=> closed', [animate('500ms ease-in-out')]),
+    ]),
+  ],
 })
 export class TaskListComponent {
-  tasks: Task[] = [];
+  tasks: FrontendTask[] = [];
 
   constructor(private taskService: TaskService) {}
 
@@ -33,8 +54,16 @@ export class TaskListComponent {
     });
   }
 
-  deleteTask(id: number) {
-    this.taskService.deleteTask(id).subscribe(() => {
+  toggleDescription(task: FrontendTask) {
+    task.showDescription = !task.showDescription;
+  }
+
+  trackByTask(index: number, task: FrontendTask): string {
+    return String(task.id); // Assuming each task has a unique `id`
+  }
+
+  deleteTask(task: FrontendTask) {
+    this.taskService.deleteTask(task.id ?? -1).subscribe(() => {
       this.loadTasks();
     });
   }

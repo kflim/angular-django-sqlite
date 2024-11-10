@@ -1,0 +1,15 @@
+<h2 class="title">Task List</h2>
+<div class="task-list">
+  <div
+    *ngFor="let task of tasks; index as i; trackBy: trackByTask"
+    class="task-container"
+  >
+    <div class="dropdown-header" (click)="toggleDescription(task)">
+      {{ task.title }}
+      <button class="delete-button" (click)="deleteTask(task)">X</button>
+    </div>
+    <div class="task-dropdown" [class.open]="task.showDescription">
+      <p class="task-description">{{ task.description }}</p>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Task } from './task.model';
+import { Observable, map } from 'rxjs';
+import { BackendTask } from './backend-task.model';
+import { FrontendTask } from './frontend-task.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,15 +12,25 @@ export class TaskService {
 
   constructor(private http: HttpClient) {}
 
-  getTasks(): Observable<Task[]> {
-    return this.http.get<Task[]>(this.apiUrl);
+  // Fetch tasks from the backend and map them to FrontendTask with showDescription property
+  getTasks(): Observable<FrontendTask[]> {
+    return this.http.get<BackendTask[]>(this.apiUrl).pipe(
+      map((tasks) =>
+        tasks.map((task) => ({
+          ...task,
+          showDescription: false, // Add the frontend-only property
+        }))
+      )
+    );
   }
 
-  addTask(task: Task): Observable<Task> {
-    return this.http.post<Task>(this.apiUrl, task);
+  // Add a new task to the backend (using BackendTask type)
+  addTask(task: BackendTask): Observable<BackendTask> {
+    return this.http.post<BackendTask>(this.apiUrl, task);
   }
 
-  deleteTask(id: number): Observable<Task> {
-    return this.http.delete<Task>(`${this.apiUrl}${id}/`);
+  // Delete a task from the backend
+  deleteTask(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}${id}/`);
   }
 }

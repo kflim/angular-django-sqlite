@@ -1,0 +1,20 @@
+<h2 class="form-title">Add Task</h2>
+<form class="task-form" (ngSubmit)="addTask()">
+  <label for="title" class="form-label">Title: </label>
+  <input
+    type="text"
+    [(ngModel)]="task.title"
+    name="title"
+    class="form-input"
+    required
+  />
+  <label for="description" class="form-label">Description: </label>
+  <textarea
+    [(ngModel)]="task.description"
+    name="description"
+    class="form-input"
+  >
+  </textarea>
+  <button type="submit" class="form-button">Add Task</button>
+</form>
+<a class="back-link" routerLink="/tasks">Back to Task List</a>
